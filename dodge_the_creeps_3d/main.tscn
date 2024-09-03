@@ -1,6 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://dreef5clkoru0"]
+[gd_scene load_steps=9 format=3 uid="uid://dreef5clkoru0"]
 
 [ext_resource type="PackedScene" uid="uid://bnqpfl107lflv" path="res://player.tscn" id="1_3lmyh"]
+[ext_resource type="Script" path="res://Main.gd" id="1_bqbcc"]
+[ext_resource type="PackedScene" uid="uid://di8p68rx38fn3" path="res://Mob.tscn" id="2_yol1d"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_uhmyl"]
 size = Vector3(60, 2, 60)
@@ -14,10 +16,20 @@ albedo_color = Color(0.969299, 0.344596, 0, 1)
 [sub_resource type="CylinderMesh" id="CylinderMesh_hsb0m"]
 material = SubResource("StandardMaterial3D_na6wi")
 
+[sub_resource type="Curve3D" id="Curve3D_m78j8"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -10.9143, 0, -14.9764, 0, 0, 0, 0, 0, 0, 13.7609, 0, -15.1527, 0, 0, 0, 0, 0, 0, 14, 0, 17, 0, 0, 0, 0, 0, 0, -11, 0, 17, 0, 0, 0, 0, 0, 0, -10.9143, 0, -14.9764),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0)
+}
+point_count = 5
+
 [node name="Main" type="Node"]
+script = ExtResource("1_bqbcc")
+mob_scene = ExtResource("2_yol1d")
 
 [node name="Ground" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+collision_layer = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
 shape = SubResource("BoxShape3D_uhmyl")
@@ -51,9 +63,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, -15)
 mesh = SubResource("CylinderMesh_hsb0m")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="Cylinders"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, 21)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, 17)
 mesh = SubResource("CylinderMesh_hsb0m")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="Cylinders"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, 17)
 mesh = SubResource("CylinderMesh_hsb0m")
+
+[node name="SpawnPath" type="Path3D" parent="."]
+curve = SubResource("Curve3D_m78j8")
+
+[node name="SpawnLocation" type="PathFollow3D" parent="SpawnPath"]
+transform = Transform3D(0.0071447, 0, -0.999974, 0, 1, 0, 0.999974, 0, 0.0071447, -10.9143, 0, -14.9764)
+
+[node name="MobTimer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
