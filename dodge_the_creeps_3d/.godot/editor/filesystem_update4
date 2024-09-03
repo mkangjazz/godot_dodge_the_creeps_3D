@@ -6,3 +6,4 @@ res://Player.gd
 res://Mob.gd
 res://ScoreLabell.gd
 res://music_player.tscn
+res://float.res

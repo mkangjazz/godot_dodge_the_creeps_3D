@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bnqpfl107lflv"]
+[gd_scene load_steps=8 format=3 uid="uid://bnqpfl107lflv"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_kwyc0"]
 [ext_resource type="PackedScene" uid="uid://bobedx1ijbr1m" path="res://player.glb" id="2_5vvwe"]
+[ext_resource type="Animation" uid="uid://kk63bpdqe3ds" path="res://float.res" id="3_a8uam"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_iem5h"]
 margin = 0.0
@@ -10,6 +11,39 @@ radius = 1.0
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_pyqor"]
 height = 0.5
 radius = 1.125
+
+[sub_resource type="Animation" id="Animation_rxelu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot/Character:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4k1ns"]
+_data = {
+"RESET": SubResource("Animation_rxelu"),
+"float": ExtResource("3_a8uam")
+}
 
 [node name="Player" type="CharacterBody3D"]
 collision_mask = 6
@@ -30,5 +64,11 @@ monitorable = false
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MobDetector"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 shape = SubResource("CylinderShape3D_pyqor")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_4k1ns")
+}
+autoplay = "float"
 
 [connection signal="body_entered" from="MobDetector" to="." method="_on_mob_detector_body_entered"]
