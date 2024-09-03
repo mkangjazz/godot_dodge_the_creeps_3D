@@ -3,3 +3,6 @@ res://player.tscn
 res://Mob.tscn
 res://Main.gd
 res://Player.gd
+res://Mob.gd
+res://ScoreLabell.gd
+res://music_player.tscn
